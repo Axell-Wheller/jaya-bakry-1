@@ -64,8 +64,9 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="index.php" class="text-2xl font-serif font-bold text-brown-700">
-                        Jaya<span class="text-amber-600">Bakry</span>
+                    <a href="index.php" class="flex items-center space-x-2 text-2xl font-serif font-bold text-brown-700">
+                        <img src="assets/images/logo.png" alt="Logo Jaya Bakry" class="h-10 w-10 mr-2 rounded-full">
+                        <span>Jaya<span class="text-amber-600">Bakry</span></span>
                     </a>
                 </div>
                 

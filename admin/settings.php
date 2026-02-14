@@ -17,7 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'store_address' => $_POST['store_address'],
         'store_phone' => $_POST['store_phone'],
         'whatsapp_number' => $_POST['whatsapp_number'],
-        'bank_account' => $_POST['bank_account']
+        'store_email' => $_POST['store_email'] ?? '',
+        'instagram_username' => $_POST['instagram_username'] ?? '',
+        'facebook_username' => $_POST['facebook_username'] ?? '',
+        'fonnte_token' => $_POST['fonnte_token'] ?? ''
     ];
     
     if (isset($_FILES['qris_image']) && $_FILES['qris_image']['error'] === 0) {
@@ -79,37 +82,8 @@ while ($row = $stmt->fetch()) {
 <body class="bg-gray-100 font-sans">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <div class="hidden md:flex md:flex-shrink-0">
-            <div class="flex flex-col w-64 bg-brown-900">
-                <div class="flex flex-col h-0 flex-1">
-                    <div class="flex items-center h-16 flex-shrink-0 px-4 bg-brown-900">
-                        <h1 class="text-xl font-bold text-white">Admin Jaya Bakry</h1>
-                    </div>
-                    <div class="flex-1 flex flex-col overflow-y-auto">
-                        <nav class="flex-1 px-2 py-4 space-y-1">
-                            <a href="dashboard.php" class="text-brown-100 hover:bg-brown-800 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                Dashboard
-                            </a>
-                            <a href="products.php" class="text-brown-100 hover:bg-brown-800 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                Produk
-                            </a>
-                            <a href="orders.php" class="text-brown-100 hover:bg-brown-800 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                Pesanan
-                            </a>
-                             <a href="settings.php" class="bg-brown-800 text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                Pengaturan
-                            </a>
-                        </nav>
-                    </div>
-                    <div class="flex-shrink-0 flex border-t border-brown-800 p-4">
-                        <a href="../logout.php" class="text-brown-100 hover:text-white text-sm font-medium">Keluar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex flex-col w-0 flex-1 overflow-hidden">
+        <?php include 'includes/sidebar.php'; ?>
+        <div class="md:pl-64 flex flex-col flex-1">
             <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
                 <div class="py-6">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
@@ -147,9 +121,31 @@ while ($row = $stmt->fetch()) {
                                         </div>
 
                                         <div class="sm:col-span-3">
-                                            <label for="whatsapp_number" class="block text-sm font-medium text-gray-700">Nomor WhatsApp (untuk Konfirmasi)</label>
+                                            <label for="whatsapp_number" class="block text-sm font-medium text-gray-700">Nomor WhatsApp (untuk Konfirmasi & Kontak)</label>
                                             <div class="mt-1">
-                                                <input type="text" name="whatsapp_number" id="whatsapp_number" placeholder="Contoh: 08123456789" value="<?php echo htmlspecialchars($current_settings['whatsapp_number'] ?? ''); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                                <input type="text" name="whatsapp_number" id="whatsapp_number" placeholder="Contoh: 628123456789" value="<?php echo htmlspecialchars($current_settings['whatsapp_number'] ?? ''); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                                <p class="mt-1 text-xs text-gray-500">Gunakan format 628xxx tanpa + atau 0 di depan.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="sm:col-span-3">
+                                            <label for="store_email" class="block text-sm font-medium text-gray-700">Email Toko</label>
+                                            <div class="mt-1">
+                                                <input type="email" name="store_email" id="store_email" value="<?php echo htmlspecialchars($current_settings['store_email'] ?? ''); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                            </div>
+                                        </div>
+
+                                        <div class="sm:col-span-3">
+                                            <label for="instagram_username" class="block text-sm font-medium text-gray-700">Username Instagram (Tanpa @)</label>
+                                            <div class="mt-1">
+                                                <input type="text" name="instagram_username" id="instagram_username" placeholder="jayabakry" value="<?php echo htmlspecialchars($current_settings['instagram_username'] ?? ''); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                            </div>
+                                        </div>
+
+                                        <div class="sm:col-span-3">
+                                            <label for="facebook_username" class="block text-sm font-medium text-gray-700">Username Facebook</label>
+                                            <div class="mt-1">
+                                                <input type="text" name="facebook_username" id="facebook_username" placeholder="jayabakry" value="<?php echo htmlspecialchars($current_settings['facebook_username'] ?? ''); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
                                             </div>
                                         </div>
                                         
@@ -166,9 +162,23 @@ while ($row = $stmt->fetch()) {
                                         </div>
 
                                         <div class="sm:col-span-6">
-                                            <label for="bank_account" class="block text-sm font-medium text-gray-700">Info Rekening Bank (untuk Pembayaran)</label>
-                                            <div class="mt-1">
-                                                <textarea id="bank_account" name="bank_account" rows="2" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"><?php echo htmlspecialchars($current_settings['bank_account'] ?? ''); ?></textarea>
+                                            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                                                <div class="flex">
+                                                    <div class="flex-shrink-0">
+                                                        <!-- Heroicon name: solid/exclamation -->
+                                                        <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                        </svg>
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <p class="text-sm text-yellow-700">
+                                                            Ingin mengatur <b>Metode Pembayaran</b> atau <b>Rekening Bank</b>?
+                                                            <a href="payment_methods.php" class="font-medium underline text-yellow-700 hover:text-yellow-600">
+                                                                Klik di sini untuk kelola metode pembayaran.
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

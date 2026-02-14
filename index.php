@@ -33,7 +33,7 @@ $featured_products = $stmt->fetchAll();
                         </div>
                         <div class="mt-3 sm:mt-0 sm:ml-3">
                             <a href="about.php" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-brown-700 bg-brown-100 hover:bg-brown-200 md:py-4 md:text-lg md:px-10 transition-colors">
-                                Tentan Kami
+                                Tentang Kami
                             </a>
                         </div>
                     </div>
@@ -42,7 +42,7 @@ $featured_products = $stmt->fetchAll();
         </div>
     </div>
     <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80" alt="Roti Segar">
+        <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="assets/images/hero-storefront.jpg" alt="Toko Jaya Bakry">
     </div>
 </div>
 

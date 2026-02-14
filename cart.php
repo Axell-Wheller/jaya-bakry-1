@@ -75,6 +75,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 
                 $pdo->commit();
+                
+                // --- Send WhatsApp Notification to Admin ---
+                require_once 'includes/whatsapp.php';
+                
+                // Get Admin WA Number
+                $stmt_wa = $pdo->query("SELECT value FROM settings WHERE key = 'whatsapp_number'");
+                $admin_wa = $stmt_wa->fetchColumn();
+                
+                if ($admin_wa) {
+                    $wa_msg = "*PESANAN BARU MASUK*\n";
+                    $wa_msg .= "Order ID: #$order_id\n";
+                    $wa_msg .= "Total: Rp " . number_format($total_amount, 0, ',', '.') . "\n\n";
+                    $wa_msg .= "*Detail Pesanan:*\n";
+                    
+                    $base_url = "http://" . $_SERVER['HTTP_HOST'];
+                    foreach ($products_in_cart as $product) {
+                        $qty = $_SESSION['cart'][$product['id']];
+                        $wa_msg .= "- $qty x " . $product['name'] . "\n";
+                        $wa_msg .= "  (Foto: " . $base_url . $product['image'] . " )\n";
+                    }
+                    
+                    $wa_msg .= "\nMohon cek admin panel utk detail lengkap.";
+                    
+                    sendWhatsapp($admin_wa, $wa_msg);
+                }
+                // -------------------------------------------
+
                 $_SESSION['cart'] = []; // Clear Cart
                 header("Location: order-success.php?id=$order_id");
                 exit;
@@ -102,6 +129,10 @@ if (!empty($_SESSION['cart'])) {
         $total_price += ($product['discount_price'] ?: $product['price']) * $product['qty'];
     }
 }
+
+// Fetch Active Payment Methods
+$stmt_payment = $pdo->query("SELECT * FROM payment_methods WHERE is_active = 1 ORDER BY name ASC");
+$payment_methods = $stmt_payment->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="bg-gray-50 min-h-screen py-12">
@@ -217,10 +248,15 @@ if (!empty($_SESSION['cart'])) {
                                     
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Metode Pembayaran</label>
                                     <select name="payment" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 mb-4 p-2 border">
-                                        <option value="transfer">Transfer Bank (BCA)</option>
-                                        <option value="qris">QRIS (Scan Barcode)</option>
-                                        <option value="cod">Bayar di Tempat (COD)</option>
-                                        <option value="ewallet">E-Wallet (GoPay/OVO)</option>
+                                        <?php if (empty($payment_methods)): ?>
+                                            <option value="" disabled>Belum ada metode pembayaran tersedia</option>
+                                        <?php else: ?>
+                                            <?php foreach ($payment_methods as $pm): ?>
+                                                <option value="<?php echo htmlspecialchars($pm['code']); ?>">
+                                                    <?php echo htmlspecialchars($pm['name']); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
                                     
                                     <button type="submit" class="w-full bg-brown-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-brown-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-brown-500">
