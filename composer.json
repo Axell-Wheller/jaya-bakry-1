@@ -1,0 +1,6 @@
+{
+    "require": {
+        "cloudinary/cloudinary_php": "*",
+        "vlucas/phpdotenv": "*"
+    }
+}
