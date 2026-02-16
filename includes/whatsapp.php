@@ -35,12 +35,15 @@ function sendWhatsapp($target, $message) {
 
     $response = curl_exec($curl);
     
-    // Check for errors (optional logging)
+    // Debug logging
+    file_put_contents(__DIR__ . '/../debug_wa.txt', date('Y-m-d H:i:s') . " - Target: $target - Response: $response\n", FILE_APPEND);
+
+    // Check for errors
     if (curl_errno($curl)) {
-        // error_log('Fonnte Error: ' . curl_error($curl));
+        file_put_contents(__DIR__ . '/../debug_wa.txt', date('Y-m-d H:i:s') . " - Error: " . curl_error($curl) . "\n", FILE_APPEND);
     }
     
-    // curl_close($curl); // Optional in newer PHP versions
+    curl_close($curl);
     return $response;
 }
 ?>

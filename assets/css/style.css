@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+
+/* Custom Scrollbar for a premium feel */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #FDF6E3;
+}
+::-webkit-scrollbar-thumb {
+    background: #A1887F;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #795548;
+}
+
+body {
+    background-color: #FDF6E3; /* Cream Background */
+    color: #3E2723; /* Dark Brown Text */
+}

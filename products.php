@@ -13,7 +13,7 @@ $products = $stmt->fetchAll();
         <div class="text-center">
             <h1 class="text-3xl font-serif font-bold text-brown-900 sm:text-4xl">Menu Kami</h1>
             <p class="mt-3 max-w-2xl mx-auto text-xl text-brown-500 sm:mt-4">
-                Pilih roti favorit Anda dari koleksi terbaik kami.
+                Pilih roti favorit Anda dari produk terbaik kami.
             </p>
         </div>
 

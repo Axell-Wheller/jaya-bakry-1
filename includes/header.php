@@ -5,57 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jaya Bakry - Aroma Khas, Rasa Pas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cream: '#FDF6E3',
-                        brown: {
-                            50: '#EFEBE9',
-                            100: '#D7CCC8',
-                            200: '#BCAAA4',
-                            300: '#A1887F',
-                            400: '#8D6E63',
-                            500: '#795548',
-                            600: '#6D4C41',
-                            700: '#5D4037', // Main Brown
-                            800: '#4E342E',
-                            900: '#3E2723',
-                        },
-                        amber: {
-                            500: '#FFC107', // Gold/Accent
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #FDF6E3; /* Cream Background */
-            color: #3E2723; /* Dark Brown Text */
-        }
-        /* Custom Scrollbar for a premium feel */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #FDF6E3;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #A1887F;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #795548;
-        }
-    </style>
+    <script src="assets/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="font-sans antialiased flex flex-col min-h-screen">
     <!-- Navigation -->

@@ -10,7 +10,7 @@
                 Setiap donat dan roti yang kami buat adalah hasil dari dedikasi kami untuk memberikan kelezatan di setiap gigitan.
             </p>
             <p class="leading-relaxed mt-4">
-                Berdiri sejak tahun 2023, kami terus berinovasi untuk menghadirkan varian rasa baru tanpa meninggalkan ciri khas rasa klasik yang disukai pelanggan setia kami.
+                Berdiri sejak tahun 2015, kami terus berinovasi untuk menghadirkan varian rasa baru tanpa meninggalkan ciri khas rasa klasik yang disukai pelanggan setia kami.
             </p>
         </div>
     </div>

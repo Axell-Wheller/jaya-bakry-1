@@ -1,4 +1,4 @@
-.env
+﻿.env
 vendor/
 database/store.db
 assets/images/uploads/

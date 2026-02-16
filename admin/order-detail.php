@@ -7,20 +7,16 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+// Include WhatsApp helper
+require_once '../includes/whatsapp.php';
+
 $id = $_GET['id'] ?? null;
 if (!$id) {
     header('Location: orders.php');
     exit;
 }
 
-// Update Status
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
-    $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
-    $stmt->execute([$_POST['status'], $id]);
-    $success = "Status pesanan berhasil diperbarui.";
-}
-
-// Fetch Order
+// Fetch Order Details FIRST to get phone number for notification
 $stmt = $pdo->prepare("SELECT o.*, u.username, u.full_name, u.phone FROM orders o JOIN users u ON o.user_id = u.id WHERE o.id = ?");
 $stmt->execute([$id]);
 $order = $stmt->fetch();
@@ -29,7 +25,41 @@ if (!$order) {
     die("Pesanan tidak ditemukan.");
 }
 
-// Fetch Items
+// Update Status
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
+    $new_status = $_POST['status'];
+    $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    $stmt->execute([$new_status, $id]);
+    
+    // Refresh order status in memory
+    $order['status'] = $new_status;
+    
+    $success = "Status pesanan berhasil diperbarui.";
+
+    // Send WhatsApp Notification
+    if ($order['phone']) {
+        $message = "Halo *" . $order['username'] . "*,\n\n";
+        $message .= "Status pesanan Anda (#" . $order['id'] . ") telah diperbarui menjadi: *" . strtoupper($new_status) . "*.\n\n";
+        
+        if ($new_status == 'processing') {
+            $message .= "Pesanan Anda sedang kami proses/buat. Mohon ditunggu ya! 👨‍🍳";
+        } elseif ($new_status == 'completed') {
+            if ($order['delivery_method'] === 'delivery') {
+                $message .= "Pesanan Anda sudah selesai dan sedang dalam proses pengiriman 🛵. Mohon pastikan nomor ini aktif saat kurir menghubungi.";
+            } else {
+                $message .= "Pesanan Anda sudah SIAP! 🛍️\nSilakan datang ke toko (Jaya Bakry) untuk mengambil pesanan Anda.";
+            }
+        } elseif ($new_status == 'cancelled') {
+            $message .= "Mohon maaf, pesanan Anda telah dibatalkan. Silakan hubungi admin jika ada pertanyaan.";
+        }
+        
+        $message .= "\n\nCek detail pesanan di website kami.";
+
+        sendWhatsapp($order['phone'], $message);
+    }
+}
+
+// Fetch Items (Moved after status logic so it doesn't affect flow)
 $stmt = $pdo->prepare("SELECT oi.*, p.name, p.image FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?");
 $stmt->execute([$id]);
 $items = $stmt->fetchAll();
@@ -42,30 +72,8 @@ $items = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Pesanan #<?php echo $id; ?> - Admin Jaya Bakry</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cream: '#FDF6E3',
-                        brown: {
-                            50: '#EFEBE9',
-                            100: '#D7CCC8',
-                            200: '#BCAAA4',
-                            300: '#A1887F',
-                            400: '#8D6E63',
-                            500: '#795548',
-                            600: '#6D4C41',
-                            700: '#5D4037', // Main Brown
-                            800: '#4E342E',
-                            900: '#3E2723',
-                        },
-                        amber: { 500: '#FFC107' }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="../assets/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="bg-gray-100 font-sans">
     <div class="flex h-screen overflow-hidden">

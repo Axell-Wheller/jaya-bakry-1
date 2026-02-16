@@ -72,9 +72,19 @@ $orders = $stmt_orders->fetchAll();
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo date('d M Y', strtotime($order['created_at'])); ?></td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp <?php echo number_format($order['total_amount'], 0, ',', '.'); ?></td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                    <?php echo $order['status'] === 'completed' ? 'bg-green-100 text-green-800' : 
-                                                            ($order['status'] === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'); ?>">
+                                                <?php
+                                                $statusClass = 'bg-gray-100 text-gray-800';
+                                                if ($order['status'] === 'completed') {
+                                                    $statusClass = 'bg-green-100 text-green-800';
+                                                } elseif ($order['status'] === 'pending') {
+                                                    $statusClass = 'bg-yellow-100 text-yellow-800';
+                                                } elseif ($order['status'] === 'processing') {
+                                                    $statusClass = 'bg-blue-100 text-blue-800';
+                                                } elseif ($order['status'] === 'cancelled') {
+                                                    $statusClass = 'bg-red-100 text-red-800';
+                                                }
+                                                ?>
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?php echo $statusClass; ?>">
                                                     <?php echo ucfirst($order['status']); ?>
                                                 </span>
                                             </td>

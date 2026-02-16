@@ -19,30 +19,8 @@ $orders = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Pesanan - Admin Jaya Bakry</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cream: '#FDF6E3',
-                        brown: {
-                            50: '#EFEBE9',
-                            100: '#D7CCC8',
-                            200: '#BCAAA4',
-                            300: '#A1887F',
-                            400: '#8D6E63',
-                            500: '#795548',
-                            600: '#6D4C41',
-                            700: '#5D4037', // Main Brown
-                            800: '#4E342E',
-                            900: '#3E2723',
-                        },
-                        amber: { 500: '#FFC107' }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="../assets/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="bg-gray-100 font-sans">
     <div class="flex h-screen overflow-hidden">
@@ -73,9 +51,19 @@ $orders = $stmt->fetchAll();
                                                         Order #<?php echo $order['id']; ?> - <?php echo htmlspecialchars($order['username']); ?>
                                                     </p>
                                                     <div class="ml-2 flex-shrink-0 flex">
-                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                            <?php echo $order['status'] === 'completed' ? 'bg-green-100 text-green-800' : 
-                                                                    ($order['status'] === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'); ?>">
+                                                        <?php
+                                                        $statusClass = 'bg-gray-100 text-gray-800';
+                                                        if ($order['status'] === 'completed') {
+                                                            $statusClass = 'bg-green-100 text-green-800';
+                                                        } elseif ($order['status'] === 'pending') {
+                                                            $statusClass = 'bg-yellow-100 text-yellow-800';
+                                                        } elseif ($order['status'] === 'processing') {
+                                                            $statusClass = 'bg-blue-100 text-blue-800';
+                                                        } elseif ($order['status'] === 'cancelled') {
+                                                            $statusClass = 'bg-red-100 text-red-800';
+                                                        }
+                                                        ?>
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?php echo $statusClass; ?>">
                                                             <?php echo ucfirst($order['status']); ?>
                                                         </span>
                                                     </div>

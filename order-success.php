@@ -211,4 +211,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['payment_proof'])) {
     </div>
 </div>
 
+<?php if (!$is_pending_payment && isset($wa_url)): ?>
+<script>
+    setTimeout(function() {
+        // Create a notification toast or changing text
+        const container = document.querySelector('.bg-white');
+        const msg = document.createElement('p');
+        msg.className = "text-center text-sm text-green-600 mt-4 font-semibold animate-pulse";
+        msg.innerHTML = "Mengalihkan ke WhatsApp...";
+        container.appendChild(msg);
+        
+        window.location.href = "<?php echo $wa_url; ?>";
+    }, 2000);
+</script>
+<?php endif; ?>
+
 <?php include 'includes/footer.php'; ?>
