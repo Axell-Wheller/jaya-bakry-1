@@ -13,7 +13,6 @@ $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();
 
-// Fetch Order History
 $stmt_orders = $pdo->prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC");
 $stmt_orders->execute([$user_id]);
 $orders = $stmt_orders->fetchAll();
@@ -58,7 +57,7 @@ $orders = $stmt_orders->fetchAll();
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kode Pesanan</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -68,7 +67,9 @@ $orders = $stmt_orders->fetchAll();
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <?php foreach ($orders as $order): ?>
                                         <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-brown-600">#<?php echo $order['id']; ?></td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-brown-600">
+                                                <?php echo htmlspecialchars($order['order_code'] ?? "#" . $order['id']); ?>
+                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo date('d M Y', strtotime($order['created_at'])); ?></td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp <?php echo number_format($order['total_amount'], 0, ',', '.'); ?></td>
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -89,6 +90,7 @@ $orders = $stmt_orders->fetchAll();
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="order-success.php?id=<?php echo $order['id']; ?>" class="text-indigo-600 hover:text-indigo-900 mr-4">Lihat Detail</a>
                                                 <?php if($order['status'] === 'pending' && $order['payment_method'] === 'transfer'): ?>
                                                     <a href="order-success.php?id=<?php echo $order['id']; ?>" class="text-green-600 hover:text-green-900">Konfirmasi WA</a>
                                                 <?php endif; ?>

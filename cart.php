@@ -63,8 +63,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($total_amount > 0) {
             $pdo->beginTransaction();
             try {
-                $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_amount, shipping_address, payment_method, delivery_method, location_data, status) VALUES (?, ?, ?, ?, ?, ?, 'pending')");
-                $stmt->execute([$user_id, $total_amount, $shipping_address, $payment_method, $delivery_method, $location_data]);
+                // Generate Unique Order Code
+                $date_str = date('Ymd');
+                $random_str = strtoupper(bin2hex(random_bytes(2))); // 4 chars
+                $order_code = "JB-{$date_str}-{$random_str}";
+                
+                // Ensure uniqueness (simple retry logic)
+                $stmt_check = $pdo->prepare("SELECT id FROM orders WHERE order_code = ?");
+                $stmt_check->execute([$order_code]);
+                while ($stmt_check->fetch()) {
+                    $random_str = strtoupper(bin2hex(random_bytes(2)));
+                    $order_code = "JB-{$date_str}-{$random_str}";
+                    $stmt_check->execute([$order_code]);
+                }
+
+                $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_amount, shipping_address, payment_method, delivery_method, location_data, status, order_code) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)");
+                $stmt->execute([$user_id, $total_amount, $shipping_address, $payment_method, $delivery_method, $location_data, $order_code]);
                 $order_id = $pdo->lastInsertId();
                 
                 $stmt_item = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
@@ -85,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if ($admin_wa) {
                     $wa_msg = "*PESANAN BARU MASUK*\n";
-                    $wa_msg .= "Order ID: #$order_id\n";
+                    $wa_msg .= "Kode Pesanan: $order_code\n";
                     $wa_msg .= "Total: Rp " . number_format($total_amount, 0, ',', '.') . "\n\n";
                     $wa_msg .= "*Detail Pesanan:*\n";
                     
@@ -259,9 +273,14 @@ $payment_methods = $stmt_payment->fetchAll(PDO::FETCH_ASSOC);
                                         <?php endif; ?>
                                     </select>
                                     
-                                    <button type="submit" class="w-full bg-brown-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-brown-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-brown-500">
-                                        Checkout Sekarang
-                                    </button>
+                                    <div class="flex flex-col space-y-3">
+                                        <button type="submit" class="w-full bg-brown-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-brown-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-brown-500">
+                                            Checkout Sekarang
+                                        </button>
+                                        <a href="products.php" class="w-full flex justify-center items-center bg-white border border-brown-600 rounded-md shadow-sm py-3 px-4 text-base font-medium text-brown-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-brown-500">
+                                            Tambah Pesanan Lagi
+                                        </a>
+                                    </div>
                                 </form>
 
                                 <script>

@@ -72,7 +72,7 @@ $payment_methods = $pdo->query("SELECT * FROM payment_methods ORDER BY is_active
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Metode Pembayaran - Admin Jaya Bakry</title>
+    <title>Kelola Metode Pembayaran - Admin Jaya Bakery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

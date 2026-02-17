@@ -17,7 +17,7 @@ $users = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Pengguna - Admin Jaya Bakry</title>
+    <title>Kelola Pengguna - Admin Jaya Bakery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

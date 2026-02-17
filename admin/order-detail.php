@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
     // Send WhatsApp Notification
     if ($order['phone']) {
         $message = "Halo *" . $order['username'] . "*,\n\n";
-        $message .= "Status pesanan Anda (#" . $order['id'] . ") telah diperbarui menjadi: *" . strtoupper($new_status) . "*.\n\n";
+        $message .= "Status pesanan Anda *" . ($order['order_code'] ?? "#" . $order['id']) . "* telah diperbarui menjadi: *" . strtoupper($new_status) . "*.\n\n";
         
         if ($new_status == 'processing') {
             $message .= "Pesanan Anda sedang kami proses/buat. Mohon ditunggu ya! 👨‍🍳";
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
             if ($order['delivery_method'] === 'delivery') {
                 $message .= "Pesanan Anda sudah selesai dan sedang dalam proses pengiriman 🛵. Mohon pastikan nomor ini aktif saat kurir menghubungi.";
             } else {
-                $message .= "Pesanan Anda sudah SIAP! 🛍️\nSilakan datang ke toko (Jaya Bakry) untuk mengambil pesanan Anda.";
+                $message .= "Pesanan Anda sudah SIAP! 🛍️\nSilakan datang ke toko (Jaya Bakery) untuk mengambil pesanan Anda.";
             }
         } elseif ($new_status == 'cancelled') {
             $message .= "Mohon maaf, pesanan Anda telah dibatalkan. Silakan hubungi admin jika ada pertanyaan.";
@@ -70,7 +70,7 @@ $items = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Pesanan #<?php echo $id; ?> - Admin Jaya Bakry</title>
+    <title>Detail Pesanan #<?php echo $id; ?> - Admin Jaya Bakery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../assets/js/tailwind-config.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -78,38 +78,14 @@ $items = $stmt->fetchAll();
 <body class="bg-gray-100 font-sans">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <div class="hidden md:flex md:flex-shrink-0">
-            <div class="flex flex-col w-64 bg-brown-900">
-                <div class="flex flex-col h-0 flex-1">
-                    <div class="flex items-center h-16 flex-shrink-0 px-4 bg-brown-900">
-                        <h1 class="text-xl font-bold text-white">Admin Jaya Bakry</h1>
-                    </div>
-                    <div class="flex-1 flex flex-col overflow-y-auto">
-                        <nav class="flex-1 px-2 py-4 space-y-1">
-                            <a href="dashboard.php" class="text-brown-100 hover:bg-brown-800 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                Dashboard
-                            </a>
-                            <a href="products.php" class="text-brown-100 hover:bg-brown-800 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                Produk
-                            </a>
-                            <a href="orders.php" class="bg-brown-800 text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                Pesanan
-                            </a>
-                        </nav>
-                    </div>
-                    <div class="flex-shrink-0 flex border-t border-brown-800 p-4">
-                        <a href="../logout.php" class="text-brown-100 hover:text-white text-sm font-medium">Keluar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php include 'includes/sidebar.php'; ?>
 
         <!-- Main Content -->
-        <div class="flex flex-col w-0 flex-1 overflow-hidden">
+        <div class="md:pl-64 flex flex-col flex-1">
             <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
                 <div class="py-6">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex justify-between items-center">
-                        <h1 class="text-2xl font-semibold text-gray-900">Detail Pesanan #<?php echo $id; ?></h1>
+                        <h1 class="text-2xl font-semibold text-gray-900">Detail Pesanan <?php echo htmlspecialchars($order['order_code'] ?? "#" . $id); ?></h1>
                         <a href="orders.php" class="text-brown-600 hover:text-brown-900 font-medium">Kembali ke Daftar</a>
                     </div>
 

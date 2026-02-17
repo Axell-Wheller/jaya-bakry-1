@@ -42,5 +42,5 @@ if (curl_errno($curl)) {
     echo "Response: " . $response . "\n";
 }
 
-curl_close($curl);
+
 ?>

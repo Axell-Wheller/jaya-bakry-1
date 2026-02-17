@@ -5,7 +5,7 @@
         <h1 class="text-3xl font-serif font-bold text-brown-900 mb-6">Tentang Kami</h1>
         <div class="prose prose-lg text-gray-700 mx-auto">
              <p class="leading-relaxed">
-                Jaya Bakry adalah toko roti dan kue terpercaya yang menyajikan produk berkualitas tinggi dengan cita rasa otentik. 
+                Jaya Bakery adalah toko roti dan kue terpercaya yang menyajikan produk berkualitas tinggi dengan cita rasa otentik. 
                 Kami berkomitmen untuk menggunakan bahan-bahan terbaik dan resep tradisional yang telah disempurnakan.
                 Setiap donat dan roti yang kami buat adalah hasil dari dedikasi kami untuk memberikan kelezatan di setiap gigitan.
             </p>

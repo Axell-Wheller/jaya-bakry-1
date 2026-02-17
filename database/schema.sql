@@ -62,5 +62,5 @@ INSERT OR IGNORE INTO users (username, password, role, full_name)
 VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'Administrator');
 
 -- Insert Sample Settings
-INSERT OR IGNORE INTO settings (key, value) VALUES ('store_name', 'Jaya Bakry');
+INSERT OR IGNORE INTO settings (key, value) VALUES ('store_name', 'Jaya Bakery');
 INSERT OR IGNORE INTO settings (key, value) VALUES ('store_address', 'Jl. Mawar No. 123');

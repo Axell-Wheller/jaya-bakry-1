@@ -52,7 +52,7 @@ while ($row = $stmt->fetch()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengaturan - Admin Jaya Bakry</title>
+    <title>Pengaturan - Admin Jaya Bakery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -102,7 +102,7 @@ while ($row = $stmt->fetch()) {
                                         <div class="sm:col-span-4">
                                             <label for="store_name" class="block text-sm font-medium text-gray-700">Nama Toko</label>
                                             <div class="mt-1">
-                                                <input type="text" name="store_name" id="store_name" value="<?php echo htmlspecialchars($current_settings['store_name'] ?? 'Jaya Bakry'); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                                <input type="text" name="store_name" id="store_name" value="<?php echo htmlspecialchars($current_settings['store_name'] ?? 'Jaya Bakery'); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
                                             </div>
                                         </div>
 

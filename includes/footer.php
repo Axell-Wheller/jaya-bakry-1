@@ -14,7 +14,7 @@ try {
     // Ignore error if table doesn't exist yet
 }
 
-$store_name = $footer_settings['store_name'] ?? 'Jaya Bakry';
+$store_name = $footer_settings['store_name'] ?? 'Jaya Bakery';
 $store_address = $footer_settings['store_address'] ?? 'Jl. Mawar No. 123, Jakarta';
 $store_phone = $footer_settings['store_phone'] ?? '+62 812 3456 7890';
 $whatsapp_number = $footer_settings['whatsapp_number'] ?? '';

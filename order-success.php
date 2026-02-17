@@ -35,7 +35,7 @@ $items = $stmt_items->fetchAll();
 
 // Format WhatsApp Message
 $base_url = "http://" . $_SERVER['HTTP_HOST'];
-$message = "Halo Admin Jaya Bakry, saya ingin konfirmasi pembayaran untuk Pesanan #$id.\n\n";
+$message = "Halo Admin Jaya Bakery, saya ingin konfirmasi pembayaran untuk Pesanan *" . ($order['order_code'] ?? "#$id") . "*.\n\n";
 $message .= "*Detail Pesanan:*\n";
 foreach ($items as $item) {
     $message .= "- " . $item['quantity'] . "x " . $item['name'] . "\n";
@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['payment_proof'])) {
                 <?php echo $is_pending_payment ? 'Selesaikan Pembayaran' : 'Pesanan Berhasil!'; ?>
             </h2>
             <p class="mt-2 text-sm text-gray-600">
-                Nomor Pesanan: <span class="font-bold">#<?php echo $id; ?></span>
+                Kode Transaksi: <span class="font-bold text-lg select-all bg-gray-100 px-2 py-1 rounded"><?php echo htmlspecialchars($order['order_code'] ?? "#" . $order['id']); ?></span>
             </p>
             
             <div class="mt-6 border-t border-gray-200 pt-6">
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['payment_proof'])) {
             <?php if ($order['delivery_method'] === 'pickup'): ?>
                 <div class="mt-6 bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
                     <p class="text-sm text-blue-800 font-medium mb-2">Kode Pengambilan (Tunjukkan di Toko)</p>
-                    <p class="text-4xl font-mono font-bold text-blue-900 tracking-wider">#<?php echo $id; ?></p>
+                    <p class="text-4xl font-mono font-bold text-blue-900 tracking-wider"><?php echo htmlspecialchars($order['order_code'] ?? "#" . $order['id']); ?></p>
                 </div>
             <?php endif; ?>
 

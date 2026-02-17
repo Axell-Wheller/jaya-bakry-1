@@ -42,7 +42,7 @@ $featured_products = $stmt->fetchAll();
         </div>
     </div>
     <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="assets/images/hero-storefront.jpg" alt="Toko Jaya Bakry">
+        <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="assets/images/hero-storefront.jpg" alt="Toko Jaya Bakery">
     </div>
 </div>
 
@@ -96,7 +96,7 @@ $featured_products = $stmt->fetchAll();
         <div class="lg:text-center">
             <h2 class="text-base text-amber-600 font-semibold tracking-wide uppercase">Kualitas Utama</h2>
             <p class="mt-2 text-3xl leading-8 font-serif font-extrabold tracking-tight text-brown-900 sm:text-4xl">
-                Kenapa Memilih Jaya Bakry?
+                Kenapa Memilih Jaya Bakery?
             </p>
         </div>
 

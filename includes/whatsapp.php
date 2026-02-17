@@ -43,7 +43,7 @@ function sendWhatsapp($target, $message) {
         file_put_contents(__DIR__ . '/../debug_wa.txt', date('Y-m-d H:i:s') . " - Error: " . curl_error($curl) . "\n", FILE_APPEND);
     }
     
-    curl_close($curl);
+
     return $response;
 }
 ?>

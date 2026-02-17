@@ -71,7 +71,7 @@ $products = $pdo->query("SELECT * FROM products ORDER BY created_at DESC")->fetc
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Produk - Admin Jaya Bakry</title>
+    <title>Kelola Produk - Admin Jaya Bakery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
