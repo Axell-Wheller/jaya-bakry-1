@@ -71,6 +71,17 @@ try {
                 </a>
             </nav>
         </div>
+  
+        <div class="flex-shrink-0 flex bg-brown-900 p-4 border-t border-brown-800">
+            <a href="../index.php" target="blank" class="flex-shrink-0 w-full group block">
+                <div class="flex items-center">
+                    <div class="ml-3">
+                        <p class="text-xs font-medium text-brown-300 group-hover:text-white">Lihat Website</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
         <div class="flex-shrink-0 flex bg-brown-900 p-4 border-t border-brown-800">
             <a href="../logout.php" class="flex-shrink-0 w-full group block">
                 <div class="flex items-center">

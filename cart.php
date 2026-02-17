@@ -59,6 +59,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $price = $product['discount_price'] ?: $product['price'];
             $total_amount += $price * $qty;
         }
+
+        // Validate Minimum Purchase for Delivery
+        if ($delivery_method === 'delivery' && $total_amount < 30000) {
+            $error = "Minimal pembelian untuk pengiriman adalah Rp 30.000";
+            // Check if we should stop execution here or let it fall through (need to handle error display)
+            // Ideally redirect back to cart or show error inline. 
+            // Since this is inside POST, let's set a session error or variable and fall through to re-render page?
+            // Re-rendering page is complex because we are inside `if ($action === 'checkout')`.
+            // Better to redirect back to cart.php with error query param or session message.
+            $_SESSION['error'] = $error;
+            header("Location: cart.php");
+            exit;
+        }
         
         if ($total_amount > 0) {
             $pdo->beginTransaction();
@@ -159,6 +172,11 @@ $payment_methods = $stmt_payment->fetchAll(PDO::FETCH_ASSOC);
                 <a href="products.php" class="text-amber-600 hover:text-amber-700 font-medium mt-4 inline-block">Mulai Belanja &rarr;</a>
             </div>
         <?php else: ?>
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span class="block sm:inline"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></span>
+                </div>
+            <?php endif; ?>
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start">
                 <div class="lg:col-span-7">
                     <ul class="border-t border-b border-gray-200 divide-y divide-gray-200">
@@ -284,11 +302,23 @@ $payment_methods = $stmt_payment->fetchAll(PDO::FETCH_ASSOC);
                                 </form>
 
                                 <script>
+                                    const totalPrice = <?php echo $total_price; ?>;
+                                    const minDelivery = 30000;
+
                                     function toggleDelivery(isDelivery) {
                                         const addressSection = document.getElementById('address-section');
                                         const addressInput = document.getElementById('address-input');
+                                        const deliveryRadio = document.getElementById('delivery');
+                                        const pickupRadio = document.getElementById('pickup');
                                         
                                         if (isDelivery) {
+                                            if (totalPrice < minDelivery) {
+                                                alert("Maaf, minimal pembelian untuk layanan antar (delivery) adalah Rp 30.000.\nSilakan pilih 'Ambil Sendiri' atau tambah belanjaan Anda.");
+                                                pickupRadio.checked = true;
+                                                // Recursive call to handle UI change properly
+                                                toggleDelivery(false);
+                                                return;
+                                            }
                                             addressSection.classList.remove('hidden');
                                             addressInput.required = true;
                                         } else {
@@ -317,10 +347,13 @@ $payment_methods = $stmt_payment->fetchAll(PDO::FETCH_ASSOC);
                                             status.textContent = "Lokasi ditemukan!";
                                             
                                             // Optional: Reverse geocoding could go here, but for now just saving coords
-                                            addressInput.value += ` (Lokasi: http://maps.google.com/maps?q=${latitude},${longitude})`;
+                                            // Update address input if empty or append
+                                            if (!addressInput.value.includes('http://maps.google.com/maps')) {
+                                                 addressInput.value += ` (Lokasi: http://maps.google.com/maps?q=${latitude},${longitude})`;
+                                            }
                                             
                                         }, () => {
-                                            status.textContent = "Gagal mendapatkan lokasi.";
+                                            status.textContent = "Gagal mendapatkan lokasi. Pastikan GPS aktif/diizinkan.";
                                         });
                                     }
                                 </script>

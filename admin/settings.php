@@ -129,6 +129,14 @@ while ($row = $stmt->fetch()) {
                                         </div>
 
                                         <div class="sm:col-span-3">
+                                            <label for="fonnte_token" class="block text-sm font-medium text-gray-700">Fonnte Token (untuk Notifikasi WA)</label>
+                                            <div class="mt-1">
+                                                <input type="text" name="fonnte_token" id="fonnte_token" placeholder="Token API Fonnte" value="<?php echo htmlspecialchars($current_settings['fonnte_token'] ?? ''); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                                <p class="mt-1 text-xs text-gray-500">Dapatkan token di <a href="https://fonnte.com" target="_blank" class="text-blue-600 hover:underline">fonnte.com</a></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="sm:col-span-3">
                                             <label for="store_email" class="block text-sm font-medium text-gray-700">Email Toko</label>
                                             <div class="mt-1">
                                                 <input type="email" name="store_email" id="store_email" value="<?php echo htmlspecialchars($current_settings['store_email'] ?? ''); ?>" class="shadow-sm focus:ring-brown-500 focus:border-brown-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">

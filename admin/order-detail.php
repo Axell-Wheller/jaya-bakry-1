@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
     $success = "Status pesanan berhasil diperbarui.";
 
     // Send WhatsApp Notification
+    $wa_status = "";
     if ($order['phone']) {
         $message = "Halo *" . $order['username'] . "*,\n\n";
         $message .= "Status pesanan Anda *" . ($order['order_code'] ?? "#" . $order['id']) . "* telah diperbarui menjadi: *" . strtoupper($new_status) . "*.\n\n";
@@ -55,8 +56,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
         
         $message .= "\n\nCek detail pesanan di website kami.";
 
-        sendWhatsapp($order['phone'], $message);
+        $response = sendWhatsapp($order['phone'], $message);
+        
+        // Check if response seems valid (Fonnte usually returns JSON)
+        $res_data = json_decode($response, true);
+        if ($res_data && isset($res_data['status']) && $res_data['status']) {
+             $wa_status = " (Notifikasi WA terkirim)";
+        } else {
+             $wa_status = " (Gagal kirim WA. Cek Token/Koneksi)";
+        }
+    } else {
+        $wa_status = " (Tidak ada nomor WA)";
     }
+    
+    $success .= $wa_status;
 }
 
 // Fetch Items (Moved after status logic so it doesn't affect flow)
@@ -124,7 +137,7 @@ $items = $stmt->fetchAll();
                                             if ($order['delivery_method'] === 'delivery' && !empty($order['location_data'])) {
                                                 $loc = json_decode($order['location_data'], true);
                                                 if ($loc && isset($loc['lat'], $loc['lng'])) {
-                                                    echo ' <a href="http://maps.google.com/maps?q=' . $loc['lat'] . ',' . $loc['lng'] . '" target="_blank" class="text-blue-600 hover:text-blue-800 ml-2">(Lihat Lokasi)</a>';
+                                                    echo ' <a href="https://www.google.com/maps/dir/?api=1&destination=' . $loc['lat'] . ',' . $loc['lng'] . '" target="_blank" class="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 ml-2">🗺️ Rute ke Lokasi</a>';
                                                 }
                                             }
                                             ?>

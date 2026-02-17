@@ -4,6 +4,7 @@ Array
     [store_address] => Jl. Ahmad Yani No.56, Iring Mulyo, Metr
     [store_phone] => 8285199471502
     [whatsapp_number] => 6285199471502
+    [fonnte_token] => Fcbqd4ggmue63NqjEHgC
     [store_email] => jayabakery@gmail.com
     [instagram_username] => jaya_bakery_metro
     [facebook_username] => jayabakerery

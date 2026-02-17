@@ -65,6 +65,14 @@ include 'includes/header.php';
                     </div>
                 </div>
 
+                <div class="flex items-center justify-between">
+                    <div class="text-sm">
+                        <a href="forgot_password.php" class="font-medium text-brown-600 hover:text-brown-500">
+                            Lupa password?
+                        </a>
+                    </div>
+                </div>
+
                 <div>
                     <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brown-600 hover:bg-brown-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown-500">
                         Masuk
